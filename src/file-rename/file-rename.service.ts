@@ -2,7 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common'
 import * as fs from 'fs'
 import * as path from 'path'
 import { RenameFilesDto } from './dto/rename-files.dto'
-import { isImageFile } from '../utils/file-utils'
+import { isImageFile, sortByNumbersInName } from '../utils/file-utils'
 
 @Injectable()
 export class FileRenameService {
@@ -26,6 +26,8 @@ export class FileRenameService {
 
     // 获取目录下的所有图片文件
     const files = this.getFiles(directoryPath, isImageType)
+    // console.log(files)
+    // return
 
     if (files.length === 0) return
 
@@ -55,7 +57,7 @@ export class FileRenameService {
             return file
           }
         })
-        .sort() // 按文件名排序以保证一致性
+        .sort(sortByNumbersInName) // 按文件名排序以保证一致性
     } catch (error) {
       throw new BadRequestException(`无法读取目录: ${error.message}`)
     }
@@ -87,8 +89,8 @@ export class FileRenameService {
           fs.renameSync(oldPath, newPath)
         }
         // 试运行模式，只打印
-        // console.log(`🔹 重命名: "${oldFileName}" -----→ "${newFileName}"`)
-        console.log(`🔹 重命名: "${oldPath}" -----→ "${newPath}"`)
+        console.log(`🔹 重命名: "${oldFileName}" -----→ "${newFileName}"`)
+        // console.log(`🔹 重命名: "${oldPath}" -----→ "${newPath}"`)
         this.executedFilesCount++
       } catch (error) {
         console.log(`❌ 错误: 无法重命名 "${oldFileName}" - ${error.message}`)
@@ -172,11 +174,13 @@ export class FileRenameService {
   private getSubfolders(parentPath: string): string[] {
     try {
       const items = fs.readdirSync(parentPath)
-      return items.filter(item => {
-        const itemPath = path.join(parentPath, item)
-        const stats = fs.statSync(itemPath)
-        return stats.isDirectory()
-      })
+      return items
+        .filter(item => {
+          const itemPath = path.join(parentPath, item)
+          const stats = fs.statSync(itemPath)
+          return stats.isDirectory()
+        })
+        .sort()
     } catch (error) {
       console.log(`❌ 读取目录失败: ${error.message}`)
       return []
