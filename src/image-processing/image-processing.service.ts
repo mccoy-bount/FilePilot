@@ -4,7 +4,7 @@ import sharp from 'sharp'
 import * as fs from 'fs'
 import * as path from 'path'
 import { CropImageDto, HorizontalCrop, VerticalCrop } from './dto/crop-image.dto'
-import { ensureDirectoryExists } from '../utils/file-utils'
+import { ensureDirectoryExists, isImageFile } from '../utils/file-utils'
 
 @Injectable()
 export class ImageProcessingService {
@@ -26,11 +26,13 @@ export class ImageProcessingService {
       // @ts-ignore
       const handler = sharp(dto.filePath)
       const metadata = await handler.metadata()
-      const width = dto.width || metadata.width
-      const height = dto.height || metadata.height
+      let width = dto.width || metadata.width
+      let height = dto.height || metadata.height
 
       const left = dto.horizontal === HorizontalCrop.RIGHT ? metadata.width - width : dto.startX
       const top = dto.vertical === VerticalCrop.BOTTOM ? metadata.height - height : dto.startY
+      width = Math.min(width, metadata.width - dto.startX)
+      height = Math.min(height, metadata.height - dto.startY)
 
       // console.log(left, top, width, height)
       await handler.extract({ left, top, width, height }).toFile(newFilePath)
@@ -44,11 +46,14 @@ export class ImageProcessingService {
     const { filePath: directoryPath } = dto
     for (const file of fs.readdirSync(directoryPath)) {
       const newFilePath = path.join(directoryPath, file)
-      const stats = fs.statSync(newFilePath)
-      // console.log(stats.isDirectory())
-      if (stats.isDirectory()) continue
-      // console.log(stats.isDirectory)
-      await this.cropImage({ ...dto, filePath: newFilePath })
+      console.log(newFilePath)
+      // const stats = fs.statSync(newFilePath)
+      // // console.log(stats.isDirectory())
+      // if (stats.isDirectory()) continue
+      // console.log(stats)
+      if (isImageFile(file)) {
+        await this.cropImage({ ...dto, filePath: newFilePath })
+      }
     }
   }
 
