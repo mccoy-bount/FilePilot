@@ -1,3 +1,5 @@
+import * as fs from 'fs'
+import * as path from 'path'
 /**
  * 文件工具类
  */
@@ -96,4 +98,32 @@ export function sortByNumbersInName(a, b) {
 
   // 前3个数字都相同：按原始文件名排序
   return a.localeCompare(b)
+}
+
+/**
+ * 创建输出目录（在源目录的父级创建 output 文件夹）
+ */
+export function createOutputDirectory(sourcePath: string, outputPrefix: string): string {
+  const sourceDir = path.resolve(sourcePath)
+  const parentDir = path.dirname(sourceDir)
+  const sourceFolderName = path.basename(sourceDir)
+
+
+  // 输出目录路径：父级目录/output/原文件夹名
+  const outputDir = path.join(parentDir, outputPrefix, sourceFolderName)
+
+  // 创建输出目录
+  ensureDirectoryExists(outputDir)
+
+  return outputDir
+}
+
+/**
+ * 确保目录存在
+ */
+export function ensureDirectoryExists(dirPath: string): void {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true })
+    // console.log(`   📁 创建目录: ${dirPath}`)
+  }
 }

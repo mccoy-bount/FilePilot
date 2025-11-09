@@ -1,5 +1,10 @@
-import { IsString, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator'
-import { Transform } from 'class-transformer'
+import {IsString, IsBoolean, IsOptional, IsNotEmpty, IsEnum} from 'class-validator'
+import {Transform, Type} from 'class-transformer'
+
+export enum RenamePattern {
+  'number',
+  'parentDir',
+}
 
 export class RenameFilesDto {
   @IsNotEmpty()
@@ -17,4 +22,11 @@ export class RenameFilesDto {
     return value !== 'false'
   })
   isImageType?: boolean = true
+
+
+
+  @IsOptional()
+  @IsEnum(RenamePattern)
+  @Type(() => Number)
+  pattern?: RenamePattern = RenamePattern.number
 }

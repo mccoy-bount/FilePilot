@@ -8,10 +8,12 @@ export class FileRenameController {
 
   @Post('rename')
   async renameFiles(@Body() renameFilesDto: RenameFilesDto) {
+    // console.log('renameFiles',renameFilesDto)
     return this.fileRenameService.renameFiles(renameFilesDto)
   }
   @Post('batch-rename')
   async renameBatchSubfolders(@Body() renameFilesDto: RenameFilesDto) {
+    // console.log('renameBatchSubfolders',renameFilesDto)
     return this.fileRenameService.renameBatchSubfolders(renameFilesDto)
   }
 }

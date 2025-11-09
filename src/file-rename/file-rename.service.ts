@@ -1,8 +1,8 @@
 import { Injectable, BadRequestException } from '@nestjs/common'
 import * as fs from 'fs'
 import * as path from 'path'
-import { RenameFilesDto } from './dto/rename-files.dto'
-import { isImageFile, sortByNumbersInName } from '../utils/file-utils'
+import { RenameFilesDto, RenamePattern } from './dto/rename-files.dto'
+import { createOutputDirectory, isImageFile, sortByNumbersInName } from '../utils/file-utils'
 
 @Injectable()
 export class FileRenameService {
@@ -15,7 +15,8 @@ export class FileRenameService {
    * 批量重命名图片文件
    */
   async renameFiles(dto: RenameFilesDto): Promise<void> {
-    const { directoryPath, dryRun, isImageType } = dto
+    const { directoryPath, dryRun, isImageType, pattern } = dto
+    // console.log('pattern', pattern)
     // console.log(directoryPath, dryRun, isImageType)
     // return
     // 验证目录是否存在
@@ -37,7 +38,12 @@ export class FileRenameService {
     console.log('='.repeat(50))
 
     // 执行重命名操作
-    await this.performRenameOperations(files, directoryPath, dryRun)
+    await this.performRenameOperations({
+      files,
+      directoryPath,
+      dryRun,
+      pattern,
+    })
     console.log('='.repeat(50))
     console.log(`\n📁 在目录 "${directoryPath}" 中${dryRun ? '模拟' : '执行'}成功 ${this.executedFilesCount} 个文件\n`)
     console.log('='.repeat(50))
@@ -66,19 +72,31 @@ export class FileRenameService {
   /**
    * 执行重命名操作
    */
-  private async performRenameOperations(
-    files: string[],
-    directoryPath: string,
-    // pattern: RenamePattern,
+  private async performRenameOperations({
+    files,
+    directoryPath,
+    dryRun,
+    pattern,
+  }: {
+    files: string[]
+    directoryPath: string
     dryRun: boolean
-  ): Promise<void> {
+    pattern: RenamePattern
+  }): Promise<void> {
     for (let i = 0; i < files.length; i++) {
       const oldFileName = files[i]
       const fileExtension = path.extname(oldFileName)
-      const newFileName = this.generateNewFileName(i, files.length, fileExtension)
+      const newFileName = this.generateNewFileName({
+        index: i,
+        totalFiles: files.length,
+        extension: fileExtension,
+        pattern,
+        directoryPath,
+        oldFileName,
+      })
 
       const oldPath = path.join(directoryPath, oldFileName)
-      const outputDir = this.createOutputDirectory(directoryPath)
+      const outputDir = createOutputDirectory(directoryPath, this.outputPrefix)
       // console.log(outputDir)
       // return
       const newPath = path.join(outputDir, newFileName)
@@ -101,42 +119,33 @@ export class FileRenameService {
   /**
    * 生成新的文件名
    */
-  private generateNewFileName(
-    index: number,
-    totalFiles: number,
-    // pattern: RenamePattern,
-    // prefix: string,
-    // customPattern: string,
+  private generateNewFileName({
+    index,
+    totalFiles,
+    extension,
+    pattern,
+    directoryPath,
+    oldFileName,
+  }: {
+    index: number
+    totalFiles: number
     extension: string
-  ): string {
-    const paddedIndex = (index + 1).toString().padStart(totalFiles.toString().length, '0')
-    return `${paddedIndex}${extension}`
-  }
-
-  /**
-   * 创建输出目录（在源目录的父级创建 output 文件夹）
-   */
-  private createOutputDirectory(sourcePath: string): string {
-    const sourceDir = path.resolve(sourcePath)
-    const parentDir = path.dirname(sourceDir)
-    const sourceFolderName = path.basename(sourceDir)
-
-    // 输出目录路径：父级目录/output/原文件夹名
-    const outputDir = path.join(parentDir, this.outputPrefix, sourceFolderName)
-
-    // 创建输出目录
-    this.ensureDirectoryExists(outputDir)
-
-    return outputDir
-  }
-
-  /**
-   * 确保目录存在
-   */
-  private ensureDirectoryExists(dirPath: string): void {
-    if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true })
-      console.log(`   📁 创建目录: ${dirPath}`)
+    pattern: RenamePattern
+    directoryPath: string
+    oldFileName: string
+    // prefix: string,
+    // customPattern: string
+  }): string {
+    // console.log('pattern', pattern)
+    switch (pattern) {
+      case RenamePattern.parentDir:
+        const parentDirName = path.basename(directoryPath)
+        console.log(parentDirName)
+        return `${parentDirName}-${oldFileName}`
+      default:
+      case RenamePattern.number:
+        const paddedIndex = (index + 1).toString().padStart(totalFiles.toString().length, '0')
+        return `${paddedIndex}${extension}`
     }
   }
 
@@ -146,7 +155,7 @@ export class FileRenameService {
   async renameBatchSubfolders(dto: RenameFilesDto): Promise<void> {
     this.executedFilesCount = 0
 
-    const { directoryPath, isImageType, dryRun } = dto
+    const { directoryPath, isImageType, dryRun, pattern } = dto
 
     console.log(`📁 执行父目录: ${directoryPath}`)
 
@@ -167,6 +176,7 @@ export class FileRenameService {
         directoryPath: folderPath,
         isImageType,
         dryRun,
+        pattern,
       })
     }
   }
