@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "task": "ts-node -r tsconfig-paths/register scripts/run-task.ts",
+    "rename": "ts-node -r tsconfig-paths/register scripts/rename-task.ts",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -16,11 +17,16 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {
+    "7zip-bin": "^5.2.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
+    "adm-zip": "^0.5.17",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "node-7z": "^3.0.0",
+    "node-7z-fix": "^3.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sharp": "^0.34.5"

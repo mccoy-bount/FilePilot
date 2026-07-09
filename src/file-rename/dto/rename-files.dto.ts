@@ -4,6 +4,7 @@ import {Transform, Type} from 'class-transformer'
 export enum RenamePattern {
   'number',
   'parentDir',
+  'tang',
 }
 
 export class RenameFilesDto {

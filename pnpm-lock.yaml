@@ -8,21 +8,36 @@ importers:
 
   .:
     dependencies:
+      7zip-bin:
+        specifier: ^5.2.0
+        version: 5.2.0
       '@nestjs/common':
         specifier: ^11.0.1
         version: 11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core':
         specifier: ^11.0.1
         version: 11.1.8(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.8)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/mapped-types':
+        specifier: '*'
+        version: 2.1.1(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)
       '@nestjs/platform-express':
         specifier: ^11.0.1
         version: 11.1.8(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)
+      adm-zip:
+        specifier: ^0.5.17
+        version: 0.5.17
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
       class-validator:
         specifier: ^0.14.2
         version: 0.14.2
+      node-7z:
+        specifier: ^3.0.0
+        version: 3.0.0
+      node-7z-fix:
+        specifier: ^3.0.1
+        version: 3.0.1
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -107,6 +122,9 @@ importers:
         version: 8.46.2(eslint@9.39.0)(typescript@5.9.3)
 
 packages:
+
+  7zip-bin@5.2.0:
+    resolution: {integrity: sha512-ukTPVhqG4jNzMro2qA9HSCSSVJN3aN7tlb+hfqYCt3ER0yWroeA2VR38MNrOHLQ/cVj+DaIMad0kFCtWWowh/A==}
 
   '@angular-devkit/core@19.2.15':
     resolution: {integrity: sha512-pU2RZYX6vhd7uLSdLwPnuBcr0mXJSjp3EgOXKsrlQFQZevc+Qs+2JdXgIElnOT/aDqtRtriDmLlSbtdE8n3ZbA==}
@@ -836,6 +854,19 @@ packages:
       '@nestjs/websockets':
         optional: true
 
+  '@nestjs/mapped-types@2.1.1':
+    resolution: {integrity: sha512-SCCoMEJ6jdeI5h/N+KCVF1+pmg/hmEkNA5nHTS8Gvww7T/LCl4o1gFLinw2iQ60w7slFkszHcGLKGdazVI4F8A==}
+    peerDependencies:
+      '@nestjs/common': ^10.0.0 || ^11.0.0
+      class-transformer: ^0.4.0 || ^0.5.0
+      class-validator: ^0.13.0 || ^0.14.0 || ^0.15.0
+      reflect-metadata: ^0.1.12 || ^0.2.0
+    peerDependenciesMeta:
+      class-transformer:
+        optional: true
+      class-validator:
+        optional: true
+
   '@nestjs/platform-express@11.1.8':
     resolution: {integrity: sha512-rL6pZH9BW7BnL5X2eWbJMtt86uloAKjFgyY5+L2UkizgfEp7rgAs0+Z1z0BcW2Pgu5+q8O7RKPNyHJ/9ZNz/ZQ==}
     peerDependencies:
@@ -1254,6 +1285,10 @@ packages:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  adm-zip@0.5.17:
+    resolution: {integrity: sha512-+Ut8d9LLqwEvHHJl1+PIHqoyDxFgVN847JTVM3Izi3xHDWPE4UtzzXysMZQs64DMcrJfBeS/uoEP4AD3HQHnQQ==}
+    engines: {node: '>=12.0'}
 
   ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
@@ -2333,11 +2368,26 @@ packages:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
 
+  lodash.defaultsdeep@4.6.1:
+    resolution: {integrity: sha512-3j8wdDzYuWO3lM3Reg03MuQR957t287Rpcxp1njpEa8oDrikb+FwGdW3n+FELh/A6qib6yPit0j/pv9G/yeAqA==}
+
+  lodash.defaultto@4.14.0:
+    resolution: {integrity: sha512-G6tizqH6rg4P5j32Wy4Z3ZIip7OfG8YWWlPFzUFGcYStH1Ld0l1tWs6NevEQNEDnO1M3NZYjuHuraaFSN5WqeQ==}
+
+  lodash.flattendeep@4.4.0:
+    resolution: {integrity: sha512-uHaJFihxmJcEX3kT4I23ABqKKalJ/zDrDg0lsFtc1h+3uw49SIJ5beyhx5ExVRti3AvKoOJngIj7xz3oylPdWQ==}
+
+  lodash.isempty@4.4.0:
+    resolution: {integrity: sha512-oKMuF3xEeqDltrGMfDxAPGIVMSSRv8tbRSODbrs4KGsRRLEhrW8N8Rd4DRgB2+621hY8A8XwwrTVhXWpxFvMzg==}
+
   lodash.memoize@4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
 
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+
+  lodash.negate@3.0.2:
+    resolution: {integrity: sha512-JGJYYVslKYC0tRMm/7igfdHulCjoXjoganRNWM8AgS+RXfOvFnPkOveDhPI65F9aAypCX9QEEQoBqWf7Q6uAeA==}
 
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
@@ -2476,6 +2526,14 @@ packages:
 
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
+
+  node-7z-fix@3.0.1:
+    resolution: {integrity: sha512-NDsySAPm0TtNkWGyX9glyQxq4PUT7JtLHrOMwLPdu1eBFCBWaNSVb5ndpkCvtNKqIe9rkQH/I7xiXMFuvsykJw==}
+    engines: {node: '>=10'}
+
+  node-7z@3.0.0:
+    resolution: {integrity: sha512-KIznWSxIkOYO/vOgKQfJEaXd7rgoFYKZbaurainCEdMhYc7V7mRHX+qdf2HgbpQFcdJL/Q6/XOPrDLoBeTfuZA==}
+    engines: {node: '>=10'}
 
   node-abort-controller@3.1.1:
     resolution: {integrity: sha512-AGK2yQKIjRuqnc6VkX2Xj5d+QW8xZ87pa1UK6yA6ouUyuxfHuMP6umE5QK7UmTeOAymo+Zx1Fxiuw9rVx8taHQ==}
@@ -3196,6 +3254,8 @@ packages:
     engines: {node: '>=18'}
 
 snapshots:
+
+  7zip-bin@5.2.0: {}
 
   '@angular-devkit/core@19.2.15(chokidar@4.0.3)':
     dependencies:
@@ -4061,6 +4121,14 @@ snapshots:
     optionalDependencies:
       '@nestjs/platform-express': 11.1.8(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)
 
+  '@nestjs/mapped-types@2.1.1(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)':
+    dependencies:
+      '@nestjs/common': 11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      reflect-metadata: 0.2.2
+    optionalDependencies:
+      class-transformer: 0.5.1
+      class-validator: 0.14.2
+
   '@nestjs/platform-express@11.1.8(@nestjs/common@11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.8)':
     dependencies:
       '@nestjs/common': 11.1.8(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -4544,6 +4612,8 @@ snapshots:
       acorn: 8.15.0
 
   acorn@8.15.0: {}
+
+  adm-zip@0.5.17: {}
 
   ajv-formats@2.1.1(ajv@8.17.1):
     optionalDependencies:
@@ -5826,9 +5896,19 @@ snapshots:
     dependencies:
       p-locate: 5.0.0
 
+  lodash.defaultsdeep@4.6.1: {}
+
+  lodash.defaultto@4.14.0: {}
+
+  lodash.flattendeep@4.4.0: {}
+
+  lodash.isempty@4.4.0: {}
+
   lodash.memoize@4.1.2: {}
 
   lodash.merge@4.6.2: {}
+
+  lodash.negate@3.0.2: {}
 
   lodash@4.17.21: {}
 
@@ -5939,6 +6019,30 @@ snapshots:
   negotiator@1.0.0: {}
 
   neo-async@2.6.2: {}
+
+  node-7z-fix@3.0.1:
+    dependencies:
+      debug: 4.4.3
+      lodash.defaultsdeep: 4.6.1
+      lodash.defaultto: 4.14.0
+      lodash.flattendeep: 4.4.0
+      lodash.isempty: 4.4.0
+      lodash.negate: 3.0.2
+      normalize-path: 3.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  node-7z@3.0.0:
+    dependencies:
+      debug: 4.4.3
+      lodash.defaultsdeep: 4.6.1
+      lodash.defaultto: 4.14.0
+      lodash.flattendeep: 4.4.0
+      lodash.isempty: 4.4.0
+      lodash.negate: 3.0.2
+      normalize-path: 3.0.0
+    transitivePeerDependencies:
+      - supports-color
 
   node-abort-controller@3.1.1: {}
 

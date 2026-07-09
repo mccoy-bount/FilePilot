@@ -1,19 +1,13 @@
 import { createScriptApp } from './script-config'
-import { FileRenameService } from '../src/file-rename/file-rename.service'
+import { FileCompressionService } from '../src/file-compression/file-compression.service'
+
 
 async function runManualTask() {
   const app = await createScriptApp()
-  const fileRenameService = app.get(FileRenameService)
 
+  const fileCompressionService = app.get(FileCompressionService)
   try {
-    const dto = {
-      directoryPath: 'D:\\迅雷下载\\www.98T.la@天羽希純写真21套 - 副本',
-      dryRun: false,
-      name: '',
-      cookie: '',
-    }
-
-    const result = await fileRenameService.renameBatchSubfolders(dto)
+    const result = await fileCompressionService.bithDecompress('', 'xx')
     console.log(result)
   } catch (error) {
     console.error('❌ 执行失败:', error)
